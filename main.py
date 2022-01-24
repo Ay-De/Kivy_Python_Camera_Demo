@@ -1,7 +1,6 @@
 from kivy.utils import platform
 from kivy.app import App
 from kivy.uix.image import Image
-import cv2
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 import cv2
