@@ -1,0 +1,40 @@
+#Naming conventions of the KV file:
+#-must be lowercase
+#-filename must be the name of the main class (which is called in the build method)
+#-if main class ends in "app", the filename must not contain the "app" part
+#Location: must be in the same directory as the python script
+
+#Define to which class the buttons will be added
+<CamApp>:
+    RelativeLayout:
+        orientation: 'vertical'
+        #Set the size of the Widget to fill the entire screen
+        size: root.width, root.height
+
+    CamApp:
+        index: self.index                       #Get index from the CamApp class
+        resolution: self.captureResolution      #Get Capture Resolution from the CamApp class
+        id: cameraPreview
+        allow_stretch: True
+        play: True
+
+    ToggleButton:
+        id: toggleViewfinderBtn
+        text: 'Toggle Viewfinder'
+        on_press: CamApp.play = not CamApp.play
+        #Button color. Note: default background is grey -> reset button background to white ('')
+        #Apply afterwards a color (here red)
+        background_normal: ''
+        background_color: 0.4, 0.5, 0.6, 1
+        #background_color: (1,0,0,1) if self.state == 'normal' else (0,1,0,1)
+        #Size of the button in % of height/width of layout
+        size_hint: 0.5, 0.2
+        #position of button
+        pos_hint: {'center_x': 0, 'center_y': -0.6}
+
+    Button:
+        id: saveImgBtn
+        text: 'Save Image'
+        size_hint: 1, 0.3
+        pos_hint: {'x': 0, 'top': 0}
+        on_press: root.captureImage()
