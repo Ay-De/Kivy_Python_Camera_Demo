@@ -6,14 +6,15 @@ The Android App will be built with buildozer.
 
 | Milestone | Status |
 | ------------- | ------------- |
-| Create Github Repo | ✅ |
+| Create Github repo | ✅ |
 | Add basic Camera feed | ⚠️|
 | Build the App with Buildozer | ✅|
 | Create a basic GUI and preview Viewfinder | ⚠️|
 | Add a Button to switch between Camera lenses | ❌ |
 | Add a Settings Page with some Options like image Resolution, and so on | ❌ |
 | Try out direct API Calls from Python to Android | ❌ |
-| Try out Github Actions to automatically build new APKs | ❌ |
+| Add Github Actions workflow to automatically build new APKs | ⚠️|
+| Add Github Actions workflow to automatically publish APK to release page | ⚠️|
 
 Legend:
 ✅ finished
