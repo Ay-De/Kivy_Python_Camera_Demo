@@ -39,7 +39,10 @@ class CamApp(Image):
         super(CamApp, self).__init__(**kwargs)
 
         #Connect CV2 to camera
-        self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
+        if (platform == 'android'):
+            self.imageStreamFromCamera = cv2.VideoCapture(self.index)
+        else:
+            self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
 
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
