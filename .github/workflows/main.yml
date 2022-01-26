@@ -83,19 +83,6 @@ jobs:
             uuid-dev \
             libssl-dev
               
-      - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-          
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-        
-      - name: setup-android-tools
-        uses: maxim-lobanov/setup-android-tools@v1
-        with: 
-          packages: ndk;19.2.5345600
-          
       - name: initialize buildozer
         run: buildozer init
 
