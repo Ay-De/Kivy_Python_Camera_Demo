@@ -1,8 +1,8 @@
-## Kivy_Python_Camera_Demo
+# Kivy_Python_Camera_Demo
 Demo application of using the built in Camera in Windows or Android. GUI is created with Kivy, communication with the camera is accomplished with OpenCV and Python.
 The Android App will be built with buildozer.
 
-# Development Roadmap
+## Development Roadmap
 
 | Milestone | Status |
 | ------------- | ------------- |
@@ -20,8 +20,8 @@ Legend:
 ⚠️in progress
 ❌ not started yet
 
-# More Info coming soon
+## More Info coming soon
 
-# Used libraries
+## Used libraries
 https://github.com/kivy/kivy
 https://github.com/opencv/opencv
