@@ -27,16 +27,10 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           # Version range or exact version of a Python version to use, using SemVer's version range syntax.
-          python-version: 3.8.12 # optional, default is 3.x
+          python-version: 3.9.0
           # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
-          cache: # optional
           # The target architecture (x86, x64) of the Python interpreter.
-          architecture: x64# optional
-          # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
-          token: # optional, default is ${{ github.token }}
-          # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
-          cache-dependency-path: # optional
-    
+          architecture: x64    
     
       # Runs a single command using the runners shell
       - name: Run a one-line script
