@@ -43,6 +43,8 @@ jobs:
           sudo apt-get install -y \
             python3-pip \
             build-essential \
+            libstdc++6 \
+            aidl \
             git \
             python3 \
             python3-dev \
@@ -90,7 +92,7 @@ jobs:
           
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
-        
+
       - name: initialize buildozer
         run: buildozer init
 
