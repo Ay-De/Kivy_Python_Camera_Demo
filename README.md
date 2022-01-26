@@ -24,4 +24,5 @@ Legend:
 
 ## Used libraries
 https://github.com/kivy/kivy
+
 https://github.com/opencv/opencv
