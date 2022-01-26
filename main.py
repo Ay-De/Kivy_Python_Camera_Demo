@@ -67,6 +67,7 @@ class CamApp(Image):
 
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
+            self.ids.cameraPreview.source = self.texture
 
     def captureImage(self):
         self.image = cv2.flip(self.frame, 0)
