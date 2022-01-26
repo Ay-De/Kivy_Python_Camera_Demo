@@ -81,11 +81,6 @@ jobs:
             libncursesw5-dev \
             libffi-dev \
             uuid-dev \
-            libffi6
-          
-      - name: install dependencies 2
-        run: |
-          sudo apt-get install libffi-dev \
             libssl-dev
               
       - name: initialize buildozer
