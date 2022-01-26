@@ -66,23 +66,13 @@ class CamApp(Image):
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
 
     def captureImage(self):
-        image = self.ids['cameraPreview']
-        timestr = time.strftime('%Y%m%d_%H%M%S')
-        image.export_to_png('IMG_{}.png'.format(timestr))
-        #camera.export_to_png('IMG-1.png')
-        print('saved')
+        self.image = cv2.flip(self.frame, 0)
+        self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
+        cv2.imwrite('IMG_{}.jpg'.format(self.timeStamp), self.image)
+        print('image saved')
 
     def switchPage(self):
         self.manager.current = 'settings'
-
-class CaptureButton(Button):
-
-    x = ObjectProperty(None)
-
-    def _on_press(self):
-        cv2.namedWindow('the image')
-        cv2.imshow('the image', self.preview.frame)
-
 
 
 kv = Builder.load_file('demo.kv')
