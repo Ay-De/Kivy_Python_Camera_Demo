@@ -85,3 +85,6 @@ jobs:
               
       - name: initialize buildozer
         run: buildozer init
+
+      - name: build debuggable apk
+        run: buildozer -v android debug
