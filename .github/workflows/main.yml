@@ -93,7 +93,9 @@ jobs:
         
       - name: setup-android-tools
         uses: maxim-lobanov/setup-android-tools@v1
-            
+        with: 
+          packages: ndk;19.2.5345600
+          
       - name: initialize buildozer
         run: buildozer init
 
