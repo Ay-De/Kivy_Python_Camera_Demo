@@ -4,8 +4,13 @@
 #-if main class ends in "app", the filename must not contain the "app" part
 #Location: must be in the same directory as the python script
 
+WindowManager:
+    MainPage:
+    SettingsPage:
+
 #Define to which class the buttons will be added
-<StartupScreen>:
+<MainPage>:
+    name: 'main'
     RelativeLayout:
         orientation: 'vertical'
         #Set the size of the Widget to fill the entire screen
@@ -13,28 +18,27 @@
 
         CamApp:
             id: cameraPreview
-            allow_stretch: True
-
-        ToggleButton:
-            id: toggleViewfinderBtn
-            text: 'Toggle Viewfinder'
-            on_press: CamApp.play = not CamApp.play
-            #Button color. Note: default background is grey -> reset button background to white ('')
-            #Apply afterwards a color (here red)
-            background_normal: ''
-            background_color: 0.4, 0.5, 0.6, 1
-            #background_color: (1,0,0,1) if self.state == 'normal' else (0,1,0,1)
-
-            size_hint: None, None
-            #Size of the button in % of height/width of layout
-            size: 0.2 * root.width, 0.2 * root.height
-            #position of button
-            center: 0, 0
+            allow_stretch: False
+            size: root.width, root.height
 
         Button:
             id: saveImgBtn
             text: 'Save Image'
-            size_hint: None, None
-            size: 0.2 * root.width, 0.2 * root.height
-            pos: 0.2 * root.width, 0.1 * root.height
-            on_press: root.CamApp.captureImage()
+            background_normal: ''
+            background_color: (0, 0, 0, 0)
+            canvas:
+                Color:
+                    rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [20]
+            size_hint: (0.1, 0.1)
+            pos_hint: {'center_x':0.5, 'center_y':0.2}
+            on_press: print("ok")
+
+<SettingsPage>:
+    name: 'settings'
+    Button:
+        text: 'back'
+
