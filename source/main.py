@@ -82,7 +82,6 @@ class CamApp(Image):
 
 kv = Builder.load_file('layout.kv')
 
-
 class DemoApp(App):
     def build(self):
         return kv
