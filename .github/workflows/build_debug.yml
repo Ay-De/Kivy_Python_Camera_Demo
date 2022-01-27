@@ -79,7 +79,7 @@ jobs:
             libssl-dev
 
       - name: Get Version
-        run: echo "APP_VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+        run: echo "APP_VERSION=${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
       - name: Build APK with debug mode enabled
         run: yes | buildozer -v android debug
