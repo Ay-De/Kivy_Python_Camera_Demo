@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Camera CV2
+title = CV2 Camera
 
 # (str) Package name
 package.name = KivyCamera
