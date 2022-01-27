@@ -54,6 +54,7 @@ class CamApp(Image):
         self._retval, self.frame = self.imageStreamFromCamera.read()
         #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
 
+        #Check if any frame was returned and if yes, process and display it
         if self._retval:
             self.frame = cv2.flip(self.frame, 0)
 
