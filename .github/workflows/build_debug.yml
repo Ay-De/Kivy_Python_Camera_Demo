@@ -77,9 +77,28 @@ jobs:
             libffi-dev \
             uuid-dev \
             libssl-dev
-              
-      - name: Initialize buildozer
-        run: buildozer init
+
+      - name: Get Version
+        run: echo "APP_VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
       - name: Build APK with debug mode enabled
         run: yes | buildozer -v android debug
+      
+      - name: copy apk
+        run: |
+          set -e
+          mv bin/KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk
+          
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: CV2 Camera ${{ env.APP_VERSION }}
+          tag_name: ${{ env.APP_VERSION }}
+          body: |
+            # First release test.
+            A simple Camera APP for android. Built with Kivy, buildozer and OpenCV.
+            ## This is a Debug APK.
+          files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
