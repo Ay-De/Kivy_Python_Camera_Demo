@@ -13,7 +13,7 @@ The Android App will be built with buildozer.
 | Add a Button to switch between Camera lenses | ❌ |
 | Add a Settings Page with some Options like image Resolution, and so on | ❌ |
 | Try out direct API Calls from Python to Android | ❌ |
-| Add Github Actions workflow to automatically build new APKs | ⚠️|
+| Add Github Actions workflow to automatically build new APKs | ✅|
 | Add Github Actions workflow to automatically publish APK to release page | ⚠️|
 
 Legend:
