@@ -79,7 +79,7 @@ class CamApp(Image):
         self.manager.current = 'settings'
 
 
-kv = Builder.load_file('demo.kv')
+kv = Builder.load_file('layout.kv')
 
 
 class DemoApp(App):
