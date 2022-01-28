@@ -47,7 +47,7 @@ class CamApp(Image):
 
       #  btn = self.parent.get_screen('main').ids.cameraPreview
       #  btn.bind(on_press=self.captureImage())
-        btn = app.root.manager.get_screen('main').ids.cameraPreview.ids.saveImgBtn
+        btn = self.app.root.manager.get_screen('main').ids.cameraPreview.ids.saveImgBtn
         btn.bind(on_press=self.captureImage())
 
     #Note: dt is not used, but required by kivys Clock.schedule_interval function
