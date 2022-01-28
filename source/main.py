@@ -44,11 +44,8 @@ class CamApp(Image):
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
 
-
-      #  btn = self.parent.get_screen('main').ids.cameraPreview
-      #  btn.bind(on_press=self.captureImage())
-        btn = self.app.root.manager.get_screen('main').ids.cameraPreview.ids.saveImgBtn
-        btn.bind(on_press=self.captureImage())
+        #self.btn = self.ids.main.ids.cameraPreview.ids.saveImgBtn
+        #btn.bind(on_press=self.captureImage())
 
     #Note: dt is not used, but required by kivys Clock.schedule_interval function
     def _drawImage(self, dt):

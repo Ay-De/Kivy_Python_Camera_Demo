@@ -9,7 +9,7 @@ WindowManager:
     SettingsPage:
 
 <MainPage>:
-    name: 'main'
+    id: main
 
     RelativeLayout:
         orientation: 'vertical'
@@ -37,7 +37,6 @@ WindowManager:
                 pos_hint: {'center_x':0.5, 'center_y':0.2}
                 on_press:
                     print("ok")
-                    #root.manager.get_screen('main').captureImage()
 
         Button:
             text: ''
