@@ -8,9 +8,9 @@ WindowManager:
     MainPage:
     SettingsPage:
 
-#Define to which class the buttons will be added
 <MainPage>:
     name: 'main'
+
     RelativeLayout:
         orientation: 'vertical'
         #Set the size of the Widget to fill the entire screen
@@ -21,24 +21,51 @@ WindowManager:
             allow_stretch: False
             size: root.width, root.height
 
+            Button:
+                id: saveImgBtn
+                text: 'Save Image'
+                background_normal: ''
+                background_color: (0, 0, 0, 0)
+                canvas:
+                    Color:
+                        rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [20]
+                size_hint: (0.1, 0.1)
+                pos_hint: {'center_x':0.5, 'center_y':0.2}
+                on_press:
+                    print("ok")
+                    #root.manager.get_screen('main').captureImage()
+
         Button:
-            id: saveImgBtn
-            text: 'Save Image'
-            background_normal: ''
-            background_color: (0, 0, 0, 0)
-            canvas:
-                Color:
-                    rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [20]
+            text: ''
+            background_normal: 'img/settings_cog.png'
+            background_down: 'img/settings_cog.png'
             size_hint: (0.1, 0.1)
-            pos_hint: {'center_x':0.5, 'center_y':0.2}
-            on_press: print("ok")
+            pos_hint: {'center_x': 0.05, 'center_y': 0.95}
+            on_press:
+                app.root.current = 'settings'
+                root.manager.transition.direction = 'left'
 
 <SettingsPage>:
     name: 'settings'
+
+    canvas:
+        Color:
+            rgba: (255/255, 255/255, 255/255, 255/255)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
     Button:
-        text: 'back'
+        text: ''
+        background_normal: 'img/settings_cog.png'
+        background_down: 'img/settings_cog.png'
+        size_hint: (0.1, 0.1)
+        pos_hint: {'center_x': 0.05, 'center_y': 0.95}
+        on_press:
+            app.root.current = 'main'
+            root.manager.transition.direction = 'right'
 

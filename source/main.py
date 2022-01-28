@@ -4,11 +4,8 @@ from kivy.uix.image import Image
 from kivy.lang.builder import Builder
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.graphics import Rectangle, Color
 from kivy.uix.button import Button
-from kivy.properties import ObjectProperty
 import cv2
 import time
 
@@ -48,6 +45,11 @@ class CamApp(Image):
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
 
 
+      #  btn = self.parent.get_screen('main').ids.cameraPreview
+      #  btn.bind(on_press=self.captureImage())
+        btn = app.root.manager.get_screen('main').ids.cameraPreview.ids.saveImgBtn
+        btn.bind(on_press=self.captureImage())
+
     #Note: dt is not used, but required by kivys Clock.schedule_interval function
     def _drawImage(self, dt):
         #Get image from Camera
@@ -68,16 +70,13 @@ class CamApp(Image):
 
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
-            self.ids.cameraPreview.source = self.texture
+            #self.ids.cameraPreview = self.texture
 
     def captureImage(self):
         self.image = cv2.flip(self.frame, 0)
         self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
         cv2.imwrite('IMG_{}.jpg'.format(self.timeStamp), self.image)
         print('image saved')
-
-    def switchPage(self):
-        self.manager.current = 'settings'
 
 
 kv = Builder.load_file('layout.kv')
