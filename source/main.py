@@ -20,8 +20,8 @@ class MainPage(Image, Screen):
     #Framerate per seconds at which the images should be drawn again
     fps: int = 30
 
-    previewWidth: int = 1280
-    previewHeight: int = 960
+    previewHeight: int = 640
+    previewWidth: int = 480
 
     def __init__(self, **kwargs):
         super(MainPage, self).__init__(**kwargs)
@@ -55,7 +55,7 @@ class MainPage(Image, Screen):
 
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
-            self.ids.cameraPreview.source = self.texture
+            #self.ids.cameraPreview.source = self.texture
 
     def captureImage(self):
         self.image = cv2.flip(self.frame, 0)

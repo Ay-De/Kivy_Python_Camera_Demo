@@ -6,17 +6,26 @@
 
 WindowManager:
     MainPage:
+        name: 'main'
+        id: main
+
     SettingsPage:
+        name: 'settings'
+        id: settings
 
 <MainPage>:
-    name: 'main'
-    id: cameraPreview
     allow_stretch: False
     #Set the size of the Widget to fill the entire screen
     size: root.width, root.height
 
     RelativeLayout:
+
         orientation: 'vertical'
+
+        Camera:
+            id: cameraPreview
+            resolution: (root.previewWidth, root.previewHeight)
+            play: True
 
         Button:
             id: saveImgBtn
@@ -46,7 +55,6 @@ WindowManager:
                 root.manager.transition.direction = 'left'
 
 <SettingsPage>:
-    name: 'settings'
 
     canvas:
         Color:
