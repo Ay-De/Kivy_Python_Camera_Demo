@@ -99,6 +99,6 @@ jobs:
             A simple Camera APP for android. Built with Kivy, buildozer and OpenCV.
             ## This is a Debug APK.
           files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk
-          prerelease: true
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
