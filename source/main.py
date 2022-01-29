@@ -43,19 +43,20 @@ class MainPage(Image, Screen):
 
         #Check if any frame was returned and if yes, process and display it
         if self._retval:
-            self.frame = cv2.flip(self.frame, 0)
+            _frame = cv2.flip(self.frame, 0)
 
             # create a texture with the same dimensions of the captured image.
             # Will be used to display the image
-            self.texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='bgr')
+            texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='bgr')
 
-            self.previewImage = cv2.resize(self.frame,
-                                           dsize=(self.previewWidth, self.previewHeight),
-                                           interpolation=cv2.INTER_AREA)
-
+            #previewImage = cv2.resize(self.frame,
+            #                               dsize=(self.previewWidth, self.previewHeight),
+            #                               interpolation=cv2.INTER_AREA)
+            texture.blit_buffer(_frame.tostring(), colorfmt='bgr', bufferfmt='ubyte')
+            self.texture = texture
             #Update the texture to display the actual image
-            self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
-            #self.ids.cameraPreview.source = self.texture
+            #self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
+            #self.ids.main.cameraPreview = self.texture
 
     def captureImage(self):
         self.image = cv2.flip(self.frame, 0)

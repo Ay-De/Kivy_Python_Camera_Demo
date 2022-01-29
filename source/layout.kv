@@ -14,18 +14,17 @@ WindowManager:
         id: settings
 
 <MainPage>:
-    allow_stretch: False
-    #Set the size of the Widget to fill the entire screen
-    size: root.width, root.height
+    Camera:
+        id: cameraPreview
+        resolution: (root.previewWidth, root.previewHeight)
+        play: True
+        allow_stretch: False
+        #Set the size of the Widget to fill the entire screen
+        size: root.width, root.height
 
     RelativeLayout:
 
         orientation: 'vertical'
-
-        Camera:
-            id: cameraPreview
-            resolution: (root.previewWidth, root.previewHeight)
-            play: True
 
         Button:
             id: saveImgBtn
