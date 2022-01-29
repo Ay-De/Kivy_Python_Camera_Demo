@@ -9,34 +9,31 @@ WindowManager:
     SettingsPage:
 
 <MainPage>:
-    id: main
+    name: 'main'
+    id: cameraPreview
+    allow_stretch: False
+    #Set the size of the Widget to fill the entire screen
+    size: root.width, root.height
 
     RelativeLayout:
         orientation: 'vertical'
-        #Set the size of the Widget to fill the entire screen
-        size: root.width, root.height
 
-        CamApp:
-            id: cameraPreview
-            allow_stretch: False
-            size: root.width, root.height
-
-            Button:
-                id: saveImgBtn
-                text: 'Save Image'
-                background_normal: ''
-                background_color: (0, 0, 0, 0)
-                canvas:
-                    Color:
-                        rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [20]
-                size_hint: (0.1, 0.1)
-                pos_hint: {'center_x':0.5, 'center_y':0.2}
-                on_press:
-                    print("ok")
+        Button:
+            id: saveImgBtn
+            text: 'Save Image'
+            background_normal: ''
+            background_color: (0, 0, 0, 0)
+            canvas:
+                Color:
+                    rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [20]
+            size_hint: (0.1, 0.1)
+            pos_hint: {'center_x':0.5, 'center_y':0.2}
+            on_press:
+                root.captureImage()
 
         Button:
             text: ''
@@ -58,13 +55,16 @@ WindowManager:
             size: self.size
             pos: self.pos
 
-    Button:
-        text: ''
-        background_normal: 'img/settings_cog.png'
-        background_down: 'img/settings_cog.png'
-        size_hint: (0.1, 0.1)
-        pos_hint: {'center_x': 0.05, 'center_y': 0.95}
-        on_press:
-            app.root.current = 'main'
-            root.manager.transition.direction = 'right'
+    RelativeLayout:
+        orientation: 'vertical'
+
+        Button:
+            text: ''
+            background_normal: 'img/settings_cog.png'
+            background_down: 'img/settings_cog.png'
+            size_hint: (0.1, 0.1)
+            pos_hint: {'center_x': 0.05, 'center_y': 0.95}
+            on_press:
+                app.root.current = 'main'
+                root.manager.transition.direction = 'right'
 

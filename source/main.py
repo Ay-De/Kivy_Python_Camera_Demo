@@ -13,16 +13,7 @@ import time
 if (platform == 'android'):
     import permissions
 
-class MainPage(Screen):
-    pass
-
-class SettingsPage(Screen):
-    pass
-
-class WindowManager(ScreenManager):
-    pass
-
-class CamApp(Image):
+class MainPage(Image, Screen):
 
     #Index of camera to use
     index: int = 0
@@ -33,7 +24,7 @@ class CamApp(Image):
     previewHeight: int = 960
 
     def __init__(self, **kwargs):
-        super(CamApp, self).__init__(**kwargs)
+        super(MainPage, self).__init__(**kwargs)
 
         #Connect CV2 to camera
         if (platform == 'android'):
@@ -43,9 +34,6 @@ class CamApp(Image):
 
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
-
-        #self.btn = self.ids.main.ids.cameraPreview.ids.saveImgBtn
-        #btn.bind(on_press=self.captureImage())
 
     #Note: dt is not used, but required by kivys Clock.schedule_interval function
     def _drawImage(self, dt):
@@ -74,6 +62,12 @@ class CamApp(Image):
         self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
         cv2.imwrite('IMG_{}.jpg'.format(self.timeStamp), self.image)
         print('image saved')
+
+class SettingsPage(Screen):
+    pass
+
+class WindowManager(ScreenManager):
+    pass
 
 
 kv = Builder.load_file('layout.kv')
