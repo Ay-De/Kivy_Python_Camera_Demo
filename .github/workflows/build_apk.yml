@@ -1,9 +1,11 @@
 
-name: Build debug APK
+name: Build APK
 on:
   # Triggers the workflow on push in develop branch
   push:
-    branches: [ develop ]
+    branches: 
+      - master
+      - develop
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,6 +31,9 @@ jobs:
           python-version: 3.9.0
           architecture: x64    
     
+      - name: Get Branch Name
+        run: echo "BRANCH=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
+  
       - name: Install buildozer
         run: pip install buildozer
 
@@ -82,31 +87,57 @@ jobs:
         run: echo "APP_VERSION=0.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
       - name: Build APK with debug mode enabled
-        run: yes | buildozer -v android debug
+        if: BRANCH == 'develop'
+        run: buildozer -v android debug
+        
+      - name: Build APK for release
+        if: BRANCH == 'master'
+        run: buildozer -v android release
       
-      - name: copy apk
+      - name: Copy debug APK
+        if: BRANCH == 'develop'
         run: |
           set -e
           mv bin/KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk
           
+      - name: Copy release APK
+        if: BRANCH == 'master'
+        run: |
+          set -e
+          mv bin/KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk
+          
+      - name: Release debug APK
+        if: BRANCH == 'develop'
+        uses: softprops/action-gh-release@v1
+        with:
+          name: CV2 Camera ${{ env.APP_VERSION }}
+          tag_name: ${{ env.APP_VERSION }}
+          body: |
+            To be changed
+            # This is a Debug APK.
+          files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Release
+        if: BRANCH == 'master'
         uses: softprops/action-gh-release@v1
         with:
           name: CV2 Camera ${{ env.APP_VERSION }}
           tag_name: ${{ env.APP_VERSION }}
           body: |
             # First release test.
-            A simple Camera APP for android. Built with Kivy, buildozer and OpenCV.
-            ## This is a Debug APK.
-          files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-debug.apk
-          prerelease: true
+            To be changed
+          files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete old Debug releases
+      - name: Delete old releases
         uses: dev-drprasad/delete-older-releases@v0.2.0
         with:
-          keep_latest: 4
+          keep_latest: 5
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
