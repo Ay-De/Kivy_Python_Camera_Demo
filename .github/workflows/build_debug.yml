@@ -29,6 +29,15 @@ jobs:
           python-version: 3.9.0
           architecture: x64    
     
+      - name: Setup Android NDK
+        id: setup-android-ndk
+        run: |
+          mkdir ~/android_ndk
+          cd ~/android_ndk
+          wget -c https://dl.google.com/android/repository/android-ndk-r23b-linux.zip
+          unzip android-ndk-r23b-linux.zip
+          echo "APP_ANDROID_NDK_PATH=$PATH:~/android_ndk/android-ndk-r23b" >> $GITHUB_ENV
+          
       - name: Install buildozer
         run: pip install buildozer
 
@@ -78,16 +87,6 @@ jobs:
             uuid-dev \
             libssl-dev
 
-      - name: Setup Android NDK
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
-        with:
-          ndk-version: r23b
-          add-to-path: true
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-          APP_ANDROID_NDK_PATH : ${{ steps.setup-ndk.outputs.ndk-path }}
-          
       - name: Get Version
         run: echo "APP_VERSION=0.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
