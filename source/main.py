@@ -33,7 +33,6 @@ class MainPage(Image, Screen):
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
             #self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 2)
 
-
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, int((1.0/self.fps)*1000))
 
