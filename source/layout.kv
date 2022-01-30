@@ -5,38 +5,44 @@
 #Location: must be in the same directory as the python script
 
 WindowManager:
+
     MainPage:
+        name: 'main'
+        id: main
+
     SettingsPage:
+        name: 'settings'
+        id: settings
 
 <MainPage>:
-    id: main
-
-    RelativeLayout:
-        orientation: 'vertical'
+    Camera:
+        id: cameraPreview
+        resolution: (root.previewHeight, root.previewWidth)
+        play: True
+        allow_stretch: True
         #Set the size of the Widget to fill the entire screen
         size: root.width, root.height
 
-        CamApp:
-            id: cameraPreview
-            allow_stretch: False
-            size: root.width, root.height
+    RelativeLayout:
 
-            Button:
-                id: saveImgBtn
-                text: 'Save Image'
-                background_normal: ''
-                background_color: (0, 0, 0, 0)
-                canvas:
-                    Color:
-                        rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [20]
-                size_hint: (0.1, 0.1)
-                pos_hint: {'center_x':0.5, 'center_y':0.2}
-                on_press:
-                    print("ok")
+        orientation: 'vertical'
+
+        Button:
+            id: saveImgBtn
+            text: 'Save Image'
+            background_normal: ''
+            background_color: (0, 0, 0, 0)
+            canvas:
+                Color:
+                    rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [20]
+            size_hint: (0.1, 0.1)
+            pos_hint: {'center_x':0.5, 'center_y':0.2}
+            on_press:
+                root.captureImage()
 
         Button:
             text: ''
@@ -49,7 +55,6 @@ WindowManager:
                 root.manager.transition.direction = 'left'
 
 <SettingsPage>:
-    name: 'settings'
 
     canvas:
         Color:
@@ -58,13 +63,16 @@ WindowManager:
             size: self.size
             pos: self.pos
 
-    Button:
-        text: ''
-        background_normal: 'img/settings_cog.png'
-        background_down: 'img/settings_cog.png'
-        size_hint: (0.1, 0.1)
-        pos_hint: {'center_x': 0.05, 'center_y': 0.95}
-        on_press:
-            app.root.current = 'main'
-            root.manager.transition.direction = 'right'
+    RelativeLayout:
+        orientation: 'vertical'
+
+        Button:
+            text: ''
+            background_normal: 'img/settings_cog.png'
+            background_down: 'img/settings_cog.png'
+            size_hint: (0.1, 0.1)
+            pos_hint: {'center_x': 0.05, 'center_y': 0.95}
+            on_press:
+                app.root.current = 'main'
+                root.manager.transition.direction = 'right'
 

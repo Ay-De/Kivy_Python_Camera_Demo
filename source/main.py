@@ -13,39 +13,28 @@ import time
 if (platform == 'android'):
     import permissions
 
-class MainPage(Screen):
-    pass
-
-class SettingsPage(Screen):
-    pass
-
-class WindowManager(ScreenManager):
-    pass
-
-class CamApp(Image):
+class MainPage(Image, Screen):
 
     #Index of camera to use
     index: int = 0
     #Framerate per seconds at which the images should be drawn again
     fps: int = 30
 
-    previewWidth: int = 1280
-    previewHeight: int = 960
+    previewHeight: int = 640
+    previewWidth: int = 480
 
     def __init__(self, **kwargs):
-        super(CamApp, self).__init__(**kwargs)
+        super(MainPage, self).__init__(**kwargs)
 
         #Connect CV2 to camera
         if (platform == 'android'):
             self.imageStreamFromCamera = cv2.VideoCapture(self.index)
         else:
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
+            #self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 2)
 
         #Clock will call a function in a specified interval in seconds
-        Clock.schedule_interval(self._drawImage, (1.0/self.fps))
-
-        #self.btn = self.ids.main.ids.cameraPreview.ids.saveImgBtn
-        #btn.bind(on_press=self.captureImage())
+        Clock.schedule_interval(self._drawImage, int((1.0/self.fps)*1000))
 
     #Note: dt is not used, but required by kivys Clock.schedule_interval function
     def _drawImage(self, dt):
@@ -67,13 +56,19 @@ class CamApp(Image):
 
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
-            #self.ids.cameraPreview = self.texture
+            self.ids.cameraPreview = self.texture
 
     def captureImage(self):
         self.image = cv2.flip(self.frame, 0)
         self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
         cv2.imwrite('IMG_{}.jpg'.format(self.timeStamp), self.image)
         print('image saved')
+
+class SettingsPage(Screen):
+    pass
+
+class WindowManager(ScreenManager):
+    pass
 
 
 kv = Builder.load_file('layout.kv')
