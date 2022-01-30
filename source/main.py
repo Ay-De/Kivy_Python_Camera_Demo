@@ -20,8 +20,8 @@ class MainPage(Image, Screen):
     #Framerate per seconds at which the images should be drawn again
     fps: int = 30
 
-    previewHeight: int = 640
-    previewWidth: int = 480
+    previewHeight: int = 1280
+    previewWidth: int = 960
 
     def __init__(self, **kwargs):
         super(MainPage, self).__init__(**kwargs)
@@ -44,7 +44,10 @@ class MainPage(Image, Screen):
 
         #Check if any frame was returned and if yes, process and display it
         if self._retval:
-            self.frame = cv2.flip(self.frame, 0)
+            if (platform == 'android'):
+                self.frame = cv2.flip(self.frame, 1)
+            else:
+                self.frame = cv2.flip(self.frame, 0)
 
             # create a texture with the same dimensions of the captured image.
             # Will be used to display the image
