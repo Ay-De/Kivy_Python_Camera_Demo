@@ -82,7 +82,7 @@ jobs:
         run: echo "APP_VERSION=0.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
       - name: Build APK with debug mode enabled
-        run: yes | buildozer -v android debug
+        run: buildozer -v android debug
       
       - name: copy apk
         run: |
