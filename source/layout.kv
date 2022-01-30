@@ -5,6 +5,7 @@
 #Location: must be in the same directory as the python script
 
 WindowManager:
+
     MainPage:
         name: 'main'
         id: main
@@ -16,9 +17,9 @@ WindowManager:
 <MainPage>:
     Camera:
         id: cameraPreview
-        resolution: (root.previewWidth, root.previewHeight)
+        resolution: (root.previewHeight, root.previewWidth)
         play: True
-        allow_stretch: False
+        allow_stretch: True
         #Set the size of the Widget to fill the entire screen
         size: root.width, root.height
 
