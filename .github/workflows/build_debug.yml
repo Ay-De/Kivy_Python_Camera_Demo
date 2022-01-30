@@ -78,6 +78,17 @@ jobs:
             uuid-dev \
             libssl-dev
 
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r23b
+          add-to-path: true
+      - run: ./build.sh
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          APP_ANDROID_NDK_PATH : ${{ steps.setup-ndk.outputs.ndk-path }}
+          
       - name: Get Version
         run: echo "APP_VERSION=0.0.${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
