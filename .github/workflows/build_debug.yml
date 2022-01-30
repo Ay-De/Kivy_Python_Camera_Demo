@@ -84,7 +84,6 @@ jobs:
         with:
           ndk-version: r23b
           add-to-path: true
-      - run: ./build.sh
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
           APP_ANDROID_NDK_PATH : ${{ steps.setup-ndk.outputs.ndk-path }}
