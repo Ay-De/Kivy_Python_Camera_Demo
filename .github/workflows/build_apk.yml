@@ -129,7 +129,7 @@ jobs:
           body: |
             # First release test.
             To be changed
-          files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk
+          files: KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release-unsigned.apk
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
