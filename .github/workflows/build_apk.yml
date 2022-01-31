@@ -104,7 +104,7 @@ jobs:
         if: ${{ env.BRANCH == 'master' }}
         run: |
           set -e
-          mv bin/KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release.apk
+          mv bin/KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release-unsigned.apk KivyCamera-${{ env.APP_VERSION }}-arm64-v8a-release-unsigned.apk
           
       - name: Release debug APK
         if: ${{ env.BRANCH == 'develop' }}
