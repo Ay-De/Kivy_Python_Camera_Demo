@@ -96,9 +96,9 @@ class SettingsPage(Screen):
 
 class WindowManager(ScreenManager):
 
-    Camera = autoclass('android.hardware.Camera')
-    print(list(Camera.open(0).getParameters().getSupportedPictureSizes()))
-    pass
+    if (platform == 'android'):
+        Camera = autoclass('android.hardware.Camera')
+        print(list(Camera.open(0).getParameters().getSupportedPictureSizes()))
 
 
 class DemoApp(App):
