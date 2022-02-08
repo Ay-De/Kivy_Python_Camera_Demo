@@ -10,6 +10,9 @@ from kivy.properties import ObjectProperty
 import cv2
 import time
 import numpy as np
+
+from jnius import autoclass
+
 # Check if platform is android and import permissions for the popup
 if (platform == 'android'):
     import permissions
@@ -21,8 +24,8 @@ class MainPage(Image, Screen):
     #Framerate per seconds at which the images should be drawn again
     fps: int = 30
 
-    rawHeight = 1080
-    rawWidth = 1920
+    rawHeight = 1280
+    rawWidth = 960
     jpegQuality = 100 #in %
     previewHeight: int = 1280
     previewWidth: int = 960
@@ -92,6 +95,9 @@ class SettingsPage(Screen):
     pass
 
 class WindowManager(ScreenManager):
+
+    Camera = autoclass('android.hardware.Camera')
+    print(list(Camera.open(0).getParameters().getSupportedPictureSizes()))
     pass
 
 
