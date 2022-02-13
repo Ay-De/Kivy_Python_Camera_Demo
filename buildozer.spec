@@ -98,7 +98,7 @@ android.minapi = 24
 android.sdk = 30
 
 # (str) Android NDK version to use
-android.ndk = 21d
+android.ndk = 21e
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 android.ndk_api = 24
@@ -240,7 +240,7 @@ android.arch = arm64-v8a
 #p4a.source_dir =
 
 # (str) The directory in which python-for-android should look for your own build recipes (if any)
-#p4a.local_recipes =
+p4a.local_recipes = ./recipes/
 
 # (str) Filename to the hook for p4a
 #p4a.hook =
