@@ -61,7 +61,7 @@ class MainPage(Image, Screen):
             print('Frame data', self.frame)
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FORMAT, -1)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, 859981650)
 
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
