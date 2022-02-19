@@ -10,6 +10,7 @@ from kivy.properties import ObjectProperty
 import cv2
 import time
 import numpy as np
+import os
 
 #from jnius import autoclass
 
@@ -17,6 +18,7 @@ print(cv2.__version__)
 
 # Check if platform is android and import permissions for the popup
 if (platform == 'android'):
+    from android.storage import primary_external_storage_path
     import permissions
 
 class MainPage(Image, Screen):
@@ -45,23 +47,28 @@ class MainPage(Image, Screen):
     def __init__(self, **kwargs):
         super(MainPage, self).__init__(**kwargs)
 
-        self.texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='bgr')
+        self.texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='rgb')
 
         #Connect CV2 to camera
         if (platform == 'android'):
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_ANDROID)
+            self.downloadDir = os.path.join(primary_external_storage_path(), 'Download')
         else:
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
             #self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 2)
 
         if self.imageStreamFromCamera.isOpened():
-            print('Camera connected Status:', self.imageStreamFromCamera.isOpened())
-            self.retval, self.frame = self.imageStreamFromCamera.read()
-            print('Frame returned:', self.retval)
-            print('Frame data', self.frame)
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FORMAT, -1)
+            #print('Camera connected Status:', self.imageStreamFromCamera.isOpened())
+            #self.retval, self.frame = self.imageStreamFromCamera.read()
+            #print('Frame returned:', self.retval)
+            #print('Frame data', self.frame)
+            #self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
+            #self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, int(859981650))
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, int(30))
+            #self.retval, self.frame = self.imageStreamFromCamera.read()
+            #print('Frame returned:', self.retval)
+            #print('Frame data', self.frame)
 
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
@@ -70,7 +77,11 @@ class MainPage(Image, Screen):
     def _drawImage(self, dt):
         #Get image from Camera
         _retval, self.frame = self.imageStreamFromCamera.read()
-        #print(self.frame)
+        try:
+            print(self.frame.shape)
+        except:
+            pass
+
         #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
 
         #Check if any frame was returned and if yes, process and display it
@@ -84,29 +95,28 @@ class MainPage(Image, Screen):
                                            dsize=(self.previewWidth, self.previewHeight),
                                            interpolation=cv2.INTER_AREA)
 
-
             #Update the texture to display the actual image
-            self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='bgr', bufferfmt='ubyte')
+            self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='rgb', bufferfmt='ubyte')
             self.canvas.ask_update()
-            #self.disp = self.ids.cameraPreview.canvas.get_group('display')[0]
+            self.disp = self.ids.cameraPreview.canvas.get_group('display')[0]
             #self.ids.saveImgBtn.canvas.ask_update()
             #self.disp.texture = self.texture
-            #self.disp = self.ids.cameraPreview.canvas.clear()
-            #self.disp.size = (self.previewWidth, self.previewHeight)
-           # self.disp.texture = self.texture
-            #self.ids.cameraPreview.canvas.ask_update()
+          #  self.disp = self.ids.cameraPreview.canvas.clear()
+            self.disp.size = (self.previewWidth, self.previewHeight)
+            self.disp.texture = self.texture
+            self.ids.cameraPreview.canvas.ask_update()
             #self.ids.cameraPreview.texture = self.texture
 
     def captureImage(self):
 
         self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
-      #  thread = threading.Thread(target=cv2.imwrite,
-      #                            args=[f'IMG_{self.timeStamp}.jpg',
-      #                                  self.frame,
-      #                                  [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality]])
-      #  thread.start()
+        thread = threading.Thread(target=cv2.imwrite,
+                                  args=[os.path.join(self.downloadDir, f'IMG_{self.timeStamp}.jpg'),
+                                        self.frame,
+                                        [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality]])
+        thread.start()
 
-        cv2.imwrite(f'IMG_{self.timeStamp}.jpg', self.frame, [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality])
+       # cv2.imwrite(os.path.join(self.downloadDir, f'IMG_{self.timeStamp}.jpg'), self.frame, [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality])
 
 
 class SettingsPage(Screen):
