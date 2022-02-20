@@ -99,15 +99,15 @@ class MainPage(Image, Screen):
 
     def captureImage(self):
 
-        _image = self.frame
-        _timeStamp = time.strftime('%Y%m%d_%H%M%S')
+        self._image = self.frame
+        self._timeStamp = time.strftime('%Y%m%d_%H%M%S')
 
-        _image = cv2.cvtColor(_image, cv2.COLOR_RGB2BGR)
+        self._image = cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR)
 
 
         thread = threading.Thread(target=cv2.imwrite,
-                                  args=[os.path.join(self.downloadDir, f'IMG_{_timeStamp}.jpg'),
-                                        _image,
+                                  args=[os.path.join(self.downloadDir, f'IMG_{self._timeStamp}.jpg'),
+                                        self._image,
                                         [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality]])
         thread.start()
 
