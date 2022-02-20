@@ -28,8 +28,15 @@ class MainPage(Image, Screen):
     #Framerate per seconds at which the images should be drawn again
     fps = 30
 
-    rawHeight = 1280
-    rawWidth = 960
+    if (platform == 'android'):
+        rawHeight = 3024
+        rawWidth = 4032
+    else:
+        rawHeight = 640
+        rawWidth = 480
+
+    codec = 859981650 # FourCC Codec to use, here RGB3
+
     jpegQuality = 100 #in %
     previewHeight = 1280
     previewWidth = 960
@@ -58,17 +65,10 @@ class MainPage(Image, Screen):
             #self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 2)
 
         if self.imageStreamFromCamera.isOpened():
-            #print('Camera connected Status:', self.imageStreamFromCamera.isOpened())
-            #self.retval, self.frame = self.imageStreamFromCamera.read()
-            #print('Frame returned:', self.retval)
-            #print('Frame data', self.frame)
-            #self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
-            #self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, int(859981650))
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, int(30))
-            #self.retval, self.frame = self.imageStreamFromCamera.read()
-            #print('Frame returned:', self.retval)
-            #print('Frame data', self.frame)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, self.codec)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
 
         #Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0/self.fps))
@@ -86,10 +86,10 @@ class MainPage(Image, Screen):
 
         #Check if any frame was returned and if yes, process and display it
         if _retval:
-            if (platform == 'android'):
-                self.frame = cv2.flip(self.frame, 1)
-            else:
-                self.frame = cv2.flip(self.frame, 0)
+         #   if (platform == 'android'):
+         #       self.frame = cv2.flip(self.frame, 1)
+         #   else:
+         #       self.frame = cv2.flip(self.frame, 0)
 
             self.previewImage = cv2.resize(self.frame,
                                            dsize=(self.previewWidth, self.previewHeight),
@@ -98,25 +98,17 @@ class MainPage(Image, Screen):
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='rgb', bufferfmt='ubyte')
             self.canvas.ask_update()
-            self.disp = self.ids.cameraPreview.canvas.get_group('display')[0]
-            #self.ids.saveImgBtn.canvas.ask_update()
-            #self.disp.texture = self.texture
-          #  self.disp = self.ids.cameraPreview.canvas.clear()
-            self.disp.size = (self.previewWidth, self.previewHeight)
-            self.disp.texture = self.texture
-            self.ids.cameraPreview.canvas.ask_update()
-            #self.ids.cameraPreview.texture = self.texture
 
     def captureImage(self):
+
+        self._image = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
 
         self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
         thread = threading.Thread(target=cv2.imwrite,
                                   args=[os.path.join(self.downloadDir, f'IMG_{self.timeStamp}.jpg'),
-                                        self.frame,
+                                        self._image,
                                         [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality]])
         thread.start()
-
-       # cv2.imwrite(os.path.join(self.downloadDir, f'IMG_{self.timeStamp}.jpg'), self.frame, [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality])
 
 
 class SettingsPage(Screen):
