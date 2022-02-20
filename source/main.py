@@ -11,6 +11,7 @@ import cv2
 import time
 import numpy as np
 import os
+from pathlib import Path
 
 #from jnius import autoclass
 
@@ -61,6 +62,7 @@ class MainPage(Image, Screen):
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_ANDROID)
             self.downloadDir = os.path.join(primary_external_storage_path(), 'Download')
         else:
+            self.downloadDir = str(Path.home() / 'Downloads')
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
             #self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 2)
 
@@ -77,12 +79,8 @@ class MainPage(Image, Screen):
     def _drawImage(self, dt):
         #Get image from Camera
         _retval, self.frame = self.imageStreamFromCamera.read()
-        try:
-            print(self.frame.shape)
-        except:
-            pass
-
-        #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+        if (platform == 'win'):
+            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
 
         #Check if any frame was returned and if yes, process and display it
         if _retval:
@@ -101,12 +99,15 @@ class MainPage(Image, Screen):
 
     def captureImage(self):
 
-        self._image = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
+        _image = self.frame
+        _timeStamp = time.strftime('%Y%m%d_%H%M%S')
 
-        self.timeStamp = time.strftime('%Y%m%d_%H%M%S')
+        _image = cv2.cvtColor(_image, cv2.COLOR_RGB2BGR)
+
+
         thread = threading.Thread(target=cv2.imwrite,
-                                  args=[os.path.join(self.downloadDir, f'IMG_{self.timeStamp}.jpg'),
-                                        self._image,
+                                  args=[os.path.join(self.downloadDir, f'IMG_{_timeStamp}.jpg'),
+                                        _image,
                                         [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality]])
         thread.start()
 
