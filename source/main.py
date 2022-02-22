@@ -76,11 +76,13 @@ class MainPage(Image, Screen):
                 self._tempCam.release()
                 break
 
-        print(self.lenses)
         self.cyclelens = cycle(self.lenses)
 
-        while nextLens != next(self.cyclelens):
+        print(self.lenses)
+
+        while (nextLens != next(self.cyclelens)):
             next(self.cyclelens)
+            print(next(self.cyclelens))
 
         # Connect CV2 to camera
         if (platform == 'android'):
@@ -89,15 +91,21 @@ class MainPage(Image, Screen):
         else:
             self.downloadDir = str(Path.home() / 'Downloads')
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_DSHOW)
-            # self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 2)
+
 
         if self.imageStreamFromCamera.isOpened():
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
+            if self.index == 3:
+                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, 3492)
+                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, 4656)
+            else:
+                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
+                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
+
             print('height', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             print('width', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_WIDTH))
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, self.codec)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M','J','P','G'))
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 3)
 
         # Clock will call a function in a specified interval in seconds
         Clock.schedule_interval(self._drawImage, (1.0 / self.fps))
