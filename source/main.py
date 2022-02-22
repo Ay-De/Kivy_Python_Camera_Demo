@@ -33,15 +33,15 @@ class MainPage(Image, Screen):
    #     except:
    #         print('could not open camera')
 
-    def __init__(self, index2=0, **kwargs):
+    def __init__(self, nextLens=0, **kwargs):
         super(MainPage, self).__init__(**kwargs)
-        print('index2 in init:', index2)
-        self.reset(index2)
+        print('nextLens in init:', nextLens)
+        self.reset(nextLens)
 
-    def reset(self, index2):
-        print('index2 in reset:', index2)
+    def reset(self, nextLens):
+        print('nextLens in reset:', nextLens)
         # Index of camera to use
-        self.index = index2
+        self.index = nextLens
         # Framerate per seconds at which the images should be drawn again
         self.fps = 30
 
@@ -51,15 +51,21 @@ class MainPage(Image, Screen):
         self.codec = 859981650  # FourCC Codec to use, here RGB3
 
         self.jpegQuality = 100  # in %
-        self.previewHeight = 960
-        self.previewWidth = 1280
+
+        if platform == 'win':
+            self.previewHeight = 960
+            self.previewWidth = 1280
+        else:
+            self.previewHeight = 1280
+            self.previewWidth = 960
 
         self.texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='rgb')
         self.lenses = []
 
         # Get number of cameras
         for n in range(0, 5):
-            self._tempCam = cv2.VideoCapture(n, cv2.CAP_DSHOW) if (platform == 'win') else cv2.VideoCapture(n,
+            self._tempCam = cv2.VideoCapture(n,
+                                             cv2.CAP_DSHOW) if (platform == 'win') else cv2.VideoCapture(n,
                                                                                                             cv2.CAP_ANDROID)
 
             if self._tempCam.isOpened():
@@ -73,6 +79,9 @@ class MainPage(Image, Screen):
         print(self.lenses)
         self.cyclelens = cycle(self.lenses)
 
+        while nextLens != next(self.cyclelens):
+            next(self.cyclelens)
+
         # Connect CV2 to camera
         if (platform == 'android'):
             self.imageStreamFromCamera = cv2.VideoCapture(self.index, cv2.CAP_ANDROID)
@@ -85,6 +94,8 @@ class MainPage(Image, Screen):
         if self.imageStreamFromCamera.isOpened():
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
+            print('height', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            print('width', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_WIDTH))
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, self.codec)
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
 
@@ -99,6 +110,10 @@ class MainPage(Image, Screen):
         if (platform == 'win'):
             self.frame = cv2.flip(self.frame, 0)
             self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
+        else:
+            self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_CLOCKWISE)
+            self.frame = cv2.flip(self.frame, 1)
+            #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
 
         #Check if any frame was returned and if yes, process and display it
         if _retval:
@@ -109,7 +124,7 @@ class MainPage(Image, Screen):
 
             self.previewImage = cv2.resize(self.frame,
                                            dsize=(self.previewWidth, self.previewHeight),
-                                           interpolation=cv2.INTER_AREA)
+                                           interpolation=cv2.INTER_NEAREST)
 
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='rgb', bufferfmt='ubyte')
@@ -123,7 +138,7 @@ class MainPage(Image, Screen):
         if platform == 'win':
             self._image = cv2.flip(cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR), 0)
         else:
-            self._image = cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR)
+            self._image = cv2.rotate(cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR), cv2.ROTATE_90_CLOCKWISE)
 
         thread = threading.Thread(target=cv2.imwrite,
                                   args=[os.path.join(self.downloadDir, f'IMG_{self._timeStamp}.jpg'),
@@ -133,11 +148,6 @@ class MainPage(Image, Screen):
 
     def switchLens(self):
         self.imageStreamFromCamera.release()
-
-        #This if statement is required, because next() returns the first element in the list on the first call
-        #instead of the next element. Only happens on the first call
-        if not hasattr(self, 'activeLens'):
-            self.activeLens = next(self.cyclelens)
 
         self.activeLens = next(self.cyclelens)
 
