@@ -48,6 +48,23 @@ WindowManager:
                 root.captureImage()
 
         Button:
+            id: switchLens
+            text: 'Switch'
+            background_normal: ''
+            background_color: (0, 0, 0, 0)
+            canvas:
+                Color:
+                    rgba: (140/255, 0, 0, 140/255) if self.state == 'normal' else (0, 100/255, 0, 140/255)
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [100]
+            size_hint: (0.05, 0.05)
+            pos_hint: {'center_x':0.7, 'center_y':0.2}
+            on_press:
+                root.switchLens()
+
+        Button:
             text: ''
             background_normal: 'img/settings_cog.png'
             background_down: 'img/settings_cog.png'
