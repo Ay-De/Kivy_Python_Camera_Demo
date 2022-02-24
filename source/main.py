@@ -119,17 +119,16 @@ class MainPage(Image, Screen, Settings):
 
         #Get image from Camera
         _retval, self.frame = self.imageStreamFromCamera.read()
-        if (platform == 'win'):
-            self.frame = cv2.flip(self.frame, 0)
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
-        else:
-            self.frame = cv2.flip(self.frame, 0)
-            self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_CLOCKWISE)
-            self.frame = cv2.flip(self.frame, 1)
-            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
 
         #Check if any frame was returned and if yes, process and display it
         if _retval:
+            if (platform == 'win'):
+                self.frame = cv2.flip(self.frame, 0)
+                self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
+            else:
+                self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_CLOCKWISE)
+                self.frame = cv2.flip(self.frame, 0)
+                #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
 
             self.previewImage = cv2.resize(self.frame,
                                         dsize=(self.previewWidth, self.previewHeight),
@@ -147,7 +146,7 @@ class MainPage(Image, Screen, Settings):
         if platform == 'win':
             self._image = cv2.flip(cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR), 0)
         else:
-            self._image = cv2.rotate(cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR), cv2.ROTATE_90_CLOCKWISE)
+            self._image = cv2.flip(cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR), 0)
 
         print(Settings.jpegQuality)
         thread = threading.Thread(target=cv2.imwrite,
