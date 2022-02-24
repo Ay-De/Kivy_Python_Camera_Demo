@@ -20,16 +20,6 @@ WindowManager:
 
         orientation: 'vertical'
 
-   #     Widget:
-   #         id: cameraPreview
-   #         canvas:
-   #             Color:
-   #                 rgba: (200/255, 255/255, 255/255, 255/255)
-   #             Rectangle:
-   #                 group: 'display'
-   #                 size: (root.width, root.height)
-   #                 pos: -self.center_x/2 ,-self.center_y/2
-
         Button:
             id: saveImgBtn
             text: 'Save Image'
@@ -83,20 +73,8 @@ WindowManager:
             size: self.size
             pos: self.pos
 
-    GridLayout:
+    RelativeLayout:
         orientation: 'vertical'
-        rows: 3
-        cols: 2
-        row_force_default: True
-        row_default_height: 20
-        Label:
-            text: 'JPEG Quality (in %)'
-        TextInput:
-            id: jpegQual
-            text: '1'
-            multiline: False
-
-
         Button:
             text: ''
             background_normal: 'img/settings_cog.png'
@@ -107,4 +85,30 @@ WindowManager:
                 root.setSettings()
                 app.root.current = 'main'
                 root.manager.transition.direction = 'right'
+
+    GridLayout:
+        rows: 5
+        cols: 2
+        row_force_default: True
+        row_default_height: 30
+        Label:
+            text: ''
+        Label:
+            text: ''
+        Label:
+            text: ''
+        Label:
+            text: ''
+        Label:
+            text: 'JPEG Quality (in %)'
+            color: (0, 0, 0, 1)
+            font_size: 16
+        TextInput:
+            id: imageQuality
+            text: ''
+            multiline: False
+            font_size: 16
+            input_filter: 'int'
+
+
 

@@ -21,7 +21,13 @@ if (platform == 'android'):
     from android.storage import primary_external_storage_path
     import permissions
 
-class MainPage(Image, Screen):
+
+class Settings:
+
+    jpegQuality = 98
+
+
+class MainPage(Image, Screen, Settings):
 
    # if (platform == 'android') and (platform == 'windows'):
    #     Camera = autoclass('android.hardware.Camera')
@@ -35,15 +41,6 @@ class MainPage(Image, Screen):
 
     def __init__(self, nextLens=0, **kwargs):
         super(MainPage, self).__init__(**kwargs)
-        print('nextLens in init:', nextLens)
-
-
-        self.reset(nextLens)
-
-    def reset(self, nextLens):
-        print('nextLens in reset:', nextLens)
-        # Index of camera to use
-        self.index = nextLens
 
         # Framerate per seconds at which the images should be drawn again
         self.fps = 30
@@ -52,7 +49,7 @@ class MainPage(Image, Screen):
         self.rawHeight = 10000
         self.rawWidth = 10000
 
-        self.jpegQuality = 100  # in %
+        #self.jpegQuality = 100  # in %
 
         if platform == 'win':
             self.previewHeight = 960
@@ -81,6 +78,14 @@ class MainPage(Image, Screen):
         self.cyclelens = cycle(self.lenses)
 
         print(self.lenses)
+
+
+        self._switch(nextLens)
+
+    def _switch(self, nextLens):
+        print('nextLens in reset:', nextLens)
+        # Index of camera to use
+        self.index = nextLens
 
         while (nextLens != next(self.cyclelens)):
             next(self.cyclelens)
@@ -146,10 +151,11 @@ class MainPage(Image, Screen):
         else:
             self._image = cv2.rotate(cv2.cvtColor(self._image, cv2.COLOR_RGB2BGR), cv2.ROTATE_90_CLOCKWISE)
 
+        print(Settings.jpegQuality)
         thread = threading.Thread(target=cv2.imwrite,
                                   args=[os.path.join(self.downloadDir, f'IMG_{self._timeStamp}.jpg'),
                                         self._image,
-                                        [int(cv2.IMWRITE_JPEG_QUALITY), self.jpegQuality]])
+                                        [int(cv2.IMWRITE_JPEG_QUALITY), Settings.jpegQuality]])
         thread.start()
 
     def switchLens(self):
@@ -158,30 +164,13 @@ class MainPage(Image, Screen):
         self.activeLens = next(self.cyclelens)
 
         #Reload the Class with the new Camera Lens
-        MainPage.reset(self, self.activeLens)
+        MainPage._switch(self, self.activeLens)
 
-        #self.imageStreamFromCamera = cv2.VideoCapture(next(self.cyclelens), cv2.CAP_ANDROID)
-        #self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
-        #self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
-        #self.width2 = self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_WIDTH)
-        #self.height2 = self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        #print(self.width2, self.height2)
-        #self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, self.codec)
-        #self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
 
-class SettingsPage(Screen):
-
-    def __init__(self, **kwargs):
-        self.jpgQuality = 100
-        self.jpgQuality2 = 14
+class SettingsPage(Screen, Settings):
 
     def setSettings(self):
-        self.jpgQuality2 = self.ids.jpegQual.text
-        self.ids.jpegQual.text = self.jpgQuality
-
-        print('qual from field: ', self.jpgQuality2)
-        print('qual after set field: ', self.ids.jpegQual.text)
-
+        Settings.jpegQuality = int(self.ids.imageQuality.text) if int(self.ids.imageQuality.text) <= 100 else 100
 
 class WindowManager(ScreenManager):
     pass
