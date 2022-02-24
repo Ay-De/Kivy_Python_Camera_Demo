@@ -1,9 +1,4 @@
-#Naming conventions of the KV file:
-#-must be lowercase
-#-filename must be the name of the main class (which is called in the build method)
-#-if main class ends in "app", the filename must not contain the "app" part
-#Location: must be in the same directory as the python script
-
+#WindowManager because we have multiple pages.
 WindowManager:
 
     MainPage:
@@ -14,8 +9,12 @@ WindowManager:
         name: 'settings'
         id: settings
 
+#MainPage contains the shutterbutton and image viewfinder/preview.
 <MainPage>:
 
+    #An empty canvas will be used to stretch the image frame on the whole screen
+    #Note the self.texture argument, which is referencing the previously in the class created texture
+    #to display the image.
     canvas:
         Color:
             rgba: (255/255, 255/255, 255/255, 255/255)
@@ -28,6 +27,7 @@ WindowManager:
 
         orientation: 'vertical'
 
+        #Shutter Button. Will call the function captureImage() of Class MainPage.
         Button:
             id: saveImgBtn
             text: 'Save Image'
@@ -72,8 +72,10 @@ WindowManager:
                 app.root.current = 'settings'
                 root.manager.transition.direction = 'left'
 
+#SettingsPage contains the user changable settings.
 <SettingsPage>:
 
+    #The background will be white
     canvas:
         Color:
             rgba: (255/255, 255/255, 255/255, 255/255)
@@ -81,6 +83,8 @@ WindowManager:
             size: self.size
             pos: self.pos
 
+    #Settings icon/cog in the upper left corner will read all settings if it is pressed by the user.
+    #Afterwards, it will transition back to the mainpage containing the viewfinder
     RelativeLayout:
         orientation: 'vertical'
         Button:
@@ -94,6 +98,9 @@ WindowManager:
                 app.root.current = 'main'
                 root.manager.transition.direction = 'right'
 
+    #Note: The GridLayout here has multiple rows and two columns. The cells will be filled from left to right,
+    #once a new row begins, it starts again from left to right. So the 3rd Label/Textfield will be in the
+    #Second row in the first cell if the table has two columns
     GridLayout:
         rows: 5
         cols: 2
@@ -116,7 +123,7 @@ WindowManager:
             text: ''
             multiline: False
             font_size: 16
-            input_filter: 'int'
+            input_filter: 'int' #Only allow integer numbers as input.
 
 
 

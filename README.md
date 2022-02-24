@@ -1,6 +1,8 @@
-# Kivy_Python_Camera_Demo
-Demo application of using the built in Camera in Windows or Android. GUI is created with Kivy, communication with the camera is accomplished with OpenCV and Python.
-The Android App will be built with buildozer.
+# Kivy_Python_Camera
+A simple camera application built to run on Windows or Android. The GUI is created with Kivy, communication with the camera is accomplished with OpenCV and Python.
+The Android App is built with buildozer.
+
+This is more of a proof of work concept demo than an actual camera application intended to be used as a daily driver.
 
 ## Development Roadmap
 
@@ -9,9 +11,9 @@ The Android App will be built with buildozer.
 | Create Github repo | ✅|
 | Add basic Camera feed | ✅|
 | Build the App with Buildozer | ✅|
-| Create a basic GUI and preview Viewfinder | ⚠️|
+| Create a basic GUI and preview Viewfinder | ✅|
 | Add a Button to switch between Camera lenses | ❌ |
-| Add a Settings Page with some Options like image Resolution, and so on | ❌ |
+| Add a Settings Page with some Options like image Resolution, and so on | ⚠️|
 | Try out direct API Calls from Python to Android | ❌ |
 | Add Github workflow to build new APKs | ✅|
 | Add Github workflow to sign build APKs | ❌ |
@@ -22,9 +24,13 @@ Legend:
 ⚠️in progress
 ❌ not started yet
 
-## More Info coming soon
+## Known Issues
+
+- Ultrawide camera lenses are producing a black image in the viewfinder and no image is saved if the shutter button is pressed
+- After switching between more than 2 camera lenses, the viewfinder becomes quite slow
 
 ## Used libraries
+
 https://github.com/kivy/kivy
 
 https://github.com/opencv/opencv
