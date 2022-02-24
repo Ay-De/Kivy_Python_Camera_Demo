@@ -83,8 +83,19 @@ WindowManager:
             size: self.size
             pos: self.pos
 
-    RelativeLayout:
+    GridLayout:
         orientation: 'vertical'
+        rows: 3
+        cols: 2
+        row_force_default: True
+        row_default_height: 20
+        Label:
+            text: 'JPEG Quality (in %)'
+        TextInput:
+            id: jpegQual
+            text: '1'
+            multiline: False
+
 
         Button:
             text: ''
@@ -93,6 +104,7 @@ WindowManager:
             size_hint: (0.1, 0.1)
             pos_hint: {'center_x': 0.05, 'center_y': 0.95}
             on_press:
+                root.setSettings()
                 app.root.current = 'main'
                 root.manager.transition.direction = 'right'
 

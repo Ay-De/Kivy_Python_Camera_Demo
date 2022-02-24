@@ -36,19 +36,21 @@ class MainPage(Image, Screen):
     def __init__(self, nextLens=0, **kwargs):
         super(MainPage, self).__init__(**kwargs)
         print('nextLens in init:', nextLens)
+
+
         self.reset(nextLens)
 
     def reset(self, nextLens):
         print('nextLens in reset:', nextLens)
         # Index of camera to use
         self.index = nextLens
+
         # Framerate per seconds at which the images should be drawn again
         self.fps = 30
 
+        # Setting raw sensor height and width to 10000, to get the highest possible resolution.
         self.rawHeight = 10000
         self.rawWidth = 10000
-
-        self.codec = 859981650  # FourCC Codec to use, here RGB3
 
         self.jpegQuality = 100  # in %
 
@@ -94,16 +96,12 @@ class MainPage(Image, Screen):
 
 
         if self.imageStreamFromCamera.isOpened():
-            if self.index == 3:
-                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, 3492)
-                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, 4656)
-            else:
-                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
-                self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
-
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_WIDTH, self.rawWidth)
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.rawHeight)
             print('height', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             print('width', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_WIDTH))
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M','J','P','G'))
+
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('B','G','R','3'))
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
             self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 3)
 
@@ -172,7 +170,18 @@ class MainPage(Image, Screen):
         #self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
 
 class SettingsPage(Screen):
-    pass
+
+    def __init__(self, **kwargs):
+        self.jpgQuality = 100
+        self.jpgQuality2 = 14
+
+    def setSettings(self):
+        self.jpgQuality2 = self.ids.jpegQual.text
+        self.ids.jpegQual.text = self.jpgQuality
+
+        print('qual from field: ', self.jpgQuality2)
+        print('qual after set field: ', self.ids.jpegQual.text)
+
 
 class WindowManager(ScreenManager):
     pass
