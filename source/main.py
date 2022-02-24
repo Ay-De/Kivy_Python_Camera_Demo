@@ -59,6 +59,7 @@ class MainPage(Image, Screen, Settings):
             self.previewWidth = 960
 
         self.texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='rgb')
+
         self.lenses = []
 
         # Get number of cameras
@@ -106,7 +107,7 @@ class MainPage(Image, Screen, Settings):
             print('height', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_HEIGHT))
             print('width', self.imageStreamFromCamera.get(cv2.CAP_PROP_FRAME_WIDTH))
 
-            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('B','G','R','3'))
+            self.imageStreamFromCamera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('R','G','B','3'))
             self.imageStreamFromCamera.set(cv2.CAP_PROP_FPS, self.fps)
             self.imageStreamFromCamera.set(cv2.CAP_PROP_BUFFERSIZE, 3)
 
@@ -122,6 +123,7 @@ class MainPage(Image, Screen, Settings):
             self.frame = cv2.flip(self.frame, 0)
             self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
         else:
+            self.frame = cv2.flip(self.frame, 0)
             self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_CLOCKWISE)
             self.frame = cv2.flip(self.frame, 1)
             #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
