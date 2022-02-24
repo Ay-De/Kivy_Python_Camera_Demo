@@ -52,11 +52,11 @@ class MainPage(Image, Screen, Settings):
         #self.jpegQuality = 100  # in %
 
         if platform == 'win':
-            self.previewHeight = 960
+            self.previewHeight = 940
             self.previewWidth = 1280
         else:
             self.previewHeight = 1280
-            self.previewWidth = 960
+            self.previewWidth = 940
 
         self.texture = Texture.create(size=(self.previewWidth, self.previewHeight), colorfmt='rgb')
 
@@ -126,18 +126,14 @@ class MainPage(Image, Screen, Settings):
             self.frame = cv2.flip(self.frame, 0)
             self.frame = cv2.rotate(self.frame, cv2.ROTATE_90_CLOCKWISE)
             self.frame = cv2.flip(self.frame, 1)
-            #self.frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
+            self.frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
 
         #Check if any frame was returned and if yes, process and display it
         if _retval:
-         #   if (platform == 'android'):
-         #       self.frame = cv2.flip(self.frame, 1)
-         #   else:
-         #       self.frame = cv2.flip(self.frame, 0)
 
             self.previewImage = cv2.resize(self.frame,
-                                           dsize=(self.previewWidth, self.previewHeight),
-                                           interpolation=cv2.INTER_NEAREST)
+                                        dsize=(self.previewWidth, self.previewHeight),
+                                        interpolation=cv2.INTER_NEAREST)
 
             #Update the texture to display the actual image
             self.texture.blit_buffer(self.previewImage.tostring(), colorfmt='rgb', bufferfmt='ubyte')
