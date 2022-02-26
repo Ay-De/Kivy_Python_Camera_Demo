@@ -29,7 +29,7 @@ Legend:
 | Folder | Description |
 | ------------- | ------------- |
 | source | Contains the Python source code|
-| recipes | Contains the modified OpenCV recipe to build the newest OpenCV version for Arm64|
+| recipes | Contains the modified OpenCV recipe to build the latest OpenCV version (current 4.5.5) for Arm64|
 | buildozer.spec | Contains the configurations for buildozer for creating the Android APK|
 
 ## Known Issues
