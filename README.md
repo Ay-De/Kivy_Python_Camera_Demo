@@ -24,6 +24,14 @@ Legend:
 ⚠️ in progress
 ❌ not started yet
 
+## File Info:
+
+| Folder | Description |
+| ------------- | ------------- |
+| source | Contains the Python source code|
+| recipes | Contains the modified OpenCV recipe to build the newest OpenCV version for Arm64|
+| buildozer.spec | Contains the configurations for buildozer for creating the Android APK|
+
 ## Known Issues
 
 - Ultrawide camera lenses are producing a black image in the viewfinder and no image is saved if the shutter button is pressed under this scenario.
