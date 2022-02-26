@@ -34,3 +34,7 @@ Legend:
 https://github.com/kivy/kivy
 
 https://github.com/opencv/opencv
+
+## Notes
+
+Special thanks to Giles Payne (https://github.com/komakai) for his help getting OpenCV to run on Android.
