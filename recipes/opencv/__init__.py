@@ -13,7 +13,7 @@ class OpenCVRecipe(NDKRecipe):
         build of most of the libraries of the opencv's package, so we can
         process images, videos, objects, photos...
     '''
-    version = '4.5.5'
+    version = '4.7.0'
     url = 'https://github.com/opencv/opencv/archive/{version}.zip'
     depends = ['numpy']
     patches = ['patches/p4a_build.patch']
@@ -61,7 +61,7 @@ class OpenCVRecipe(NDKRecipe):
 
             python_major = self.ctx.python_recipe.version[0]
             python_include_root = self.ctx.python_recipe.include_root(arch.arch)
-            python_site_packages = self.ctx.get_site_packages_dir()
+            python_site_packages = self.ctx.get_site_packages_dir(arch)
             python_link_root = self.ctx.python_recipe.link_root(arch.arch)
             python_link_version = self.ctx.python_recipe.link_version
             python_library = join(python_link_root,
