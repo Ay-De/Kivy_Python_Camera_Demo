@@ -28,7 +28,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
         with:
-          python-version: 3.9.0
+          python-version: 3.10.0
           architecture: x64    
     
       - name: Get Branch Name
